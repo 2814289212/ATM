@@ -3,6 +3,7 @@
 #include<string.h>
 #include<time.h>
 #include<windows.h>
+#include<conio.h>
 void homePage();
 struct Transaction
 {
@@ -42,7 +43,6 @@ Account* curAccount = NULL;//记录当前账户
 //加载成功返回1，否则返回0 
 void loadData()
 {
-	void printLinkedList();
 	FILE* fp = fopen("D:/demo2/atm.txt", "r");
 	if (fp != NULL)
 	{
@@ -72,8 +72,6 @@ void loadData()
 		}
 		fclose(fp);
 	}
-	printf("加载成功！\n");
-	printLinkedList();
 }
 
 void drawMoney()
@@ -142,6 +140,42 @@ void drawMoney()
 	}
 	
 }
+
+void transfer() {
+	system("cls");
+	FILE* fp = fopen("D:/demo2/atm.txt", "r+");
+	if (fp == NULL)	//无该条件判断将会出现警告Warning C6387
+		exit(-1);
+	int money;
+	char id[7] = {"\0"};
+	Account* curp=head;
+	
+
+	
+	printf("\n\n\t\t请输入转账人的用户名：");
+	scanf_s("%s", &id,7);
+	while (curp!=NULL)
+	{
+	
+	
+		if (strcmp(id,curp->username) == 0) 
+		{
+			printf("\n\n\t\t请输入要转账的金额：");
+			scanf_s("%d", &money);
+			printf("\n\n\t\t请确认数目：%d", money);
+			curp->money += money;
+			curAccount->money -= money;
+			printf("\n\n\n转账成功");
+			fprintf(fp, "%s\t%s\t%d\n", curAccount->username, curAccount->password,curAccount->money);
+			fclose(fp);
+		}
+		curp =curp-> next;
+		
+	}
+	system("pause");
+	homePage();
+}
+
 
 void saveMoney()
 {
@@ -327,17 +361,20 @@ void signIn()
 
 void showMenu()
 {
+	system("cls");
 	if (language == 1)
 	{
-		printf("------登录，请按1------\n");
-		printf("------开户，请按2------\n");
-		printf("------退出，请按3------\n");
+		printf("\t\t||------------------------------||\n");
+		printf("\t\t||	    登录>1		||\n");
+		printf("\t\t||	    开户>2		||\n");
+		printf("\t\t||	    退出>3		||\n");
+		printf("\t\t||------------------------------||\n");
 	}
 	else if (language == 2)
 	{
-		printf("------Sign in, press 1------\n");
-		printf("------Sign up, press 2------\n");
-		printf("------Sign out, press 3------\n");
+		printf("-	Sign in> 1	-\n");
+		printf("-	Sign up> 2	-\n");
+		printf("-	Sign out> 3	-\n");
 	}
 	int n;
 	scanf_s("%d", &n);
@@ -375,10 +412,12 @@ void saveData()
 void homePage()
 {
 	system("cls");
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	取款>1			存款>2	||\n");
+	printf("\t\t||	查询服务>3		转账>4	||\n");
+	printf("\t\t||	更改密码>4		退出>6	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	
-	printf("-	取款>1				存款>2	-\n");
-	printf("-	转账>3			查询服务>4	-\n");
-	printf("-	更改密码>5			退出>6	-\n");
 	
 	int n;
 	scanf_s("%d",&n);
@@ -386,8 +425,8 @@ void homePage()
 	{
 	case 1: drawMoney(); break;
 	case 2: saveMoney(); break;
-	case 3:
-	case 4: enquiryService(); break;
+	case 4:transfer(curAccount); break;
+	case 3: enquiryService(); break;
 	case 5: updatePassword(); break;
 	case 6: esc(); break;
 	default:
@@ -399,8 +438,10 @@ void homePage()
 int main()
 {
 	loadData();
-	printf("中文服务，按1\n");
-	printf("English Service，Press 2\n");
+	printf("\t\t||-----------ATM服务------------||\n");
+	printf("\t\t||	   中文服务>1		||\n");
+	printf("\t\t||	English Service>2	||\n");
+	printf("\t\t||------------------------------||\n");
 	scanf_s("%d", &language);
 	showMenu();
 	saveData();
