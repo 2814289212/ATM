@@ -4,8 +4,6 @@
 #include<time.h>
 #include<windows.h>
 #include<conio.h>
-void homePage();
-void transfer();
 
 struct Transaction
 {
@@ -41,6 +39,8 @@ typedef struct Account Account;
 Account* head = NULL;//指向头结点 
 Account* tail = NULL;//指向尾结点 
 Account* curAccount = NULL;//记录当前账户 
+void homePage();
+void transfer();
 
 
 //加载成功返回1，否则返回0 
@@ -53,7 +53,8 @@ void loadData()
 		{
 			//创建结点
 			Account* newNode = (Account*)malloc(sizeof(Account));
-			if (newNode == NULL) {
+			if (newNode == NULL) 
+			{
 				exit(-1);
 			}//判断malloc申请空间是否成功，消除警告
 
@@ -86,7 +87,8 @@ void loadDataTR()
 		{
 			//创建结点
 			TR* Node = (TR*)malloc(sizeof(TR));
-			if (Node == NULL) {
+			if (Node == NULL)
+			{
 				exit(-1);
 			}//判断malloc申请空间是否成功，消除警告
 
@@ -183,7 +185,8 @@ void drawMoney()
 
 				//产生交易记录...	
 				TR* newNode = (TR*)malloc(sizeof(TR));
-				if (newNode == NULL) {
+				if (newNode == NULL)
+				{
 					exit(-1);
 				}//判断malloc申请空间是否成功，消除警告
 				newNode->next = NULL;
@@ -262,7 +265,8 @@ void transfer() {
 
 					//创建结点
 					TR* newNode = (TR*)malloc(sizeof(TR));
-					if (newNode == NULL) {
+					if (newNode == NULL)
+					{
 						exit(-1);
 					}//判断malloc申请空间是否成功，消除警告
 					//结点初始化
@@ -336,7 +340,8 @@ void saveMoney()
 
 						//产生交易记录...	
 			TR* newNode = (TR*)malloc(sizeof(TR));
-			if (newNode == NULL) {
+			if (newNode == NULL)
+			{
 				exit(-1);
 			}//判断malloc申请空间是否成功，消除警告
 			newNode->next = NULL;
@@ -409,7 +414,8 @@ void signUp()
 {
 	void showMenu();
 	Account* newNode = (Account*)malloc(sizeof(Account));
-	if (newNode == NULL) {
+	if (newNode == NULL)
+	{
 		exit(-1);
 	}//判断malloc申请空间是否成功，消除警告
 	newNode->next = NULL;
