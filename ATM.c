@@ -41,8 +41,16 @@ Account* tail = NULL;//指向尾结点
 Account* curAccount = NULL;//记录当前账户 
 void homePage();
 void transfer();
+void esc();
+void saveData();
+void date() 
+{//显示当前日期
+	printf("当前日期：");
+	system("date/t");
+	printf("当前时间：");
+	system("time/t");
 
-
+}
 //加载成功返回1，否则返回0 
 void loadData()
 {
@@ -60,7 +68,7 @@ void loadData()
 
 			//结点初始化
 			newNode->next = NULL;
-			fscanf_s(fp, "%s %s %f\n", newNode->username,19, newNode->password,7,&newNode->money);
+			fscanf_s(fp, "%s %s %f\n", newNode->username,19, newNode->password, 7, &newNode->money);
 
 			//添加结点到链表
 			if (head == NULL)
@@ -131,8 +139,12 @@ void findeTR(Account *a)
 {
 	TR* curP = tHead;
 	system("cls");
-	printf("\t\t-	交易记录>1		返回>2	-\n");
-
+	date();
+	printf("\n\n\n");
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	交易记录>1	返回菜单>2	||\n");
+	printf("\t\t||	        		退出>3	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	int n;
 	scanf_s("%d", &n);
 	switch (n)
@@ -142,7 +154,8 @@ void findeTR(Account *a)
 			{
 				if (strcmp(curP->username, a->username) == 0)
 				{
-					printf("%s\t\t%d\t%f\t\n\n", curP->username,curP->type, curP->amount);
+					printf("%s\t\t%d\t%f\t", curP->username,curP->type, curP->amount);
+					system("date/t");
 				}
 				curP = curP->next;
 			}
@@ -157,10 +170,19 @@ void findeTR(Account *a)
 void drawMoney()
 {
 	system("cls");
-	printf("\t\t-	取款>1		返回>2	-\n");
-		
+	date();
+	printf("\n\n\n");
+	printf("**********************************************************************\n");
+	printf("*                           请整百取款                               *\n");
+	printf("**********************************************************************\n\n\n");
+
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	取款>1		返回菜单>2	||\n");
+	printf("\t\t||	        		退出>3	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	int n;
 	scanf_s("%d",&n);
+
 	switch (n)
 	{
 	case 1:
@@ -191,7 +213,7 @@ void drawMoney()
 				}//判断malloc申请空间是否成功，消除警告
 				newNode->next = NULL;
 				strcpy(newNode->username, curAccount->username);
-				newNode->type =0;
+				newNode->type = 0 ;
 				newNode->amount = money;
 				newNode->timestamp = time(NULL);
 
@@ -216,8 +238,10 @@ void drawMoney()
 				printf("\t\t余额不足！\n");
 			}
 			saveTR();
+			saveData();
 			system("pause");
 	case 2: homePage(); break;
+	case 3: esc();
 	default:
 		break;
 	}
@@ -226,15 +250,20 @@ void drawMoney()
 
 void transfer() {
 	system("cls");
+	date();
+	printf("\n\n\n");
 	FILE* fp = fopen("D:/demo2/atm.txt", "r+");
 	if (fp == NULL)	//无该条件判断将会出现警告Warning C6387
 		exit(-1);
 	float money;
-	char id[7] = {"\0"};
+	char id[9] = {"\0"};
 	Account* curp=head;
 	
 
-	printf("\t\t-	转账>1		返回>2	-\n");
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	转账>1		返回菜单>2	||\n");
+	printf("\t\t||	        		退出>3	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	int n;
 	scanf_s("%d",&n);
 	system("cls");
@@ -242,7 +271,7 @@ void transfer() {
 	{
 	case 1:
 		printf("\n\n\t\t请输入转账人的用户名：");
-		scanf_s("%s", &id, 7);
+		scanf_s("%s", &id, 9);
 		while (curp != NULL)
 		{
 
@@ -253,15 +282,13 @@ void transfer() {
 				scanf_s("%f", &money);
 				if (curAccount->money >= money)
 				{
-					printf("\n\n\t\t请确认数目：%f", money);
+					printf("\n\n\t\t请确认数目：%f\n", money);
 					system("pause");
 					curp->money += money;
 					curAccount->money -= money;
 					printf("\n\n\n转账成功!\n");
 					fprintf(fp, "%s\t%s\t%f\n", curAccount->username, curAccount->password, curAccount->money);
-					curAccount->money -= money;
 
-					//产生交易记录...	
 
 					//创建结点
 					TR* newNode = (TR*)malloc(sizeof(TR));
@@ -303,8 +330,10 @@ void transfer() {
 
 		}
 		saveTR();
+		saveData();
 		system("pause");
 	case 2:homePage();
+	case 3:esc();
 	default:
 		break;
 	}
@@ -317,8 +346,16 @@ void transfer() {
 void saveMoney()
 {
 	system("cls");
-	printf("\t\t-	存款>1		返回>2	-\n");
-
+	date();
+	printf("\n\n\n");
+	
+	printf("**********************************************************************\n");
+	printf("*                           请整百存款                               *\n");
+	printf("**********************************************************************\n\n\n");
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	存款>1		返回菜单>2	||\n");
+	printf("\t\t||	        		退出>3	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	int n;
 	scanf_s("%d", &n);
 	switch (n)
@@ -364,8 +401,11 @@ void saveMoney()
 				tTail = newNode;
 			}
 			saveTR();
+			saveData();
 			system("pause");
+
 	case 2: homePage(); break;
+	case 3: esc();
 	default:
 		break;
 	}
@@ -382,15 +422,21 @@ void esc()
 void enquiryService()
 {
 	system("cls");
-	printf("\t\t-	余额查询>1		返回>2	-\n");
+	date();
+	printf("\n\n\n");
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	余额查询>1	返回菜单>2	||\n");
+	printf("\t\t||	        		退出>3	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	
 	int n;
 	scanf_s("%d", &n);
 	switch (n)
 	{
-	case 1:printf("%s\t\t%f\t\n", curAccount->username, curAccount->money);
+	case 1:printf("%s\t\t%f\t\n", curAccount->username,  curAccount->money);
 		   system("pause");
 	case 2:homePage(); break;
+	case 3:esc();
 	default:
 		break;
 	}
@@ -413,6 +459,9 @@ void printLinkedList()
 void signUp()
 {
 	void showMenu();
+	system("cls");
+	date();
+	printf("\n\n\n");
 	Account* newNode = (Account*)malloc(sizeof(Account));
 	if (newNode == NULL)
 	{
@@ -428,6 +477,7 @@ void signUp()
 	tail->next = newNode;
 	tail = newNode;
 	printf("\t\t注册成功！\n");
+	saveData();
 	showMenu();
 
 }
@@ -454,7 +504,15 @@ void updatePassword()
 {
 
 	system("cls");
-	printf("\t\t-	更改密码>1		返回>2	-\n");
+	date();
+	printf("\n\n\n");
+	printf("**********************************************************************\n");
+	printf("*           请输入原密码与新密码，新密码不能与原密码相同！           *\n");
+	printf("**********************************************************************\n\n\n");
+	printf("\t\t||--------------------------------------||\n");
+	printf("\t\t||	更改密码>1	返回菜单>2	||\n");
+	printf("\t\t||	        		退出>3	||\n");
+	printf("\t\t||--------------------------------------||\n");
 	
 	int n;
 	scanf_s("%d", &n);
@@ -486,7 +544,9 @@ void updatePassword()
 				printf("\t\t密码错误！不能修改！\n");
 			}
 			system("pause");
+			saveData();
 	case 2:	homePage(); break;
+	case 3: esc();
 	default:
 		break;
 	}
@@ -497,7 +557,12 @@ void updatePassword()
 
 void signIn()
 {
-
+	system("cls");
+	date();
+	printf("\n\n\n");
+	printf("**********************************************************************\n");
+	printf("*请输入正确的账号与密码，当日三次错误输入后将无法使用，请次日再尝试！*\n");
+	printf("**********************************************************************\n\n\n");
 	int i;
 	for (i = 0; i < 3; i++)
 	{
@@ -520,7 +585,7 @@ void signIn()
 	}
 	Account* node=head;
 	curAccount = node;
-	
+	saveData();
 
 }
 
@@ -528,6 +593,8 @@ void signIn()
 void showMenu()
 {
 	system("cls");
+	date();
+	printf("\n\n\n");
 	if (language == 1)
 	{
 		printf("\t\t||------------------------------||\n");
@@ -554,7 +621,7 @@ void showMenu()
 	}
 	else if (n == 3)
 	{
-		return;
+		esc();
 	}
 }
 
@@ -578,6 +645,11 @@ void saveData()
 void homePage()
 {
 	system("cls");
+	date();
+	printf("\n\n\n");
+	printf("**********************************************************************\n");
+	printf("*                     请根据需要选择您所需的服务                   ！*\n");
+	printf("**********************************************************************\n\n\n");
 	printf("\t\t||--------------------------------------||\n");
 	printf("\t\t||	取款>1		余额查询>4	||\n");
 	printf("\t\t||	存款>2		更改密码>5	||\n");
@@ -607,6 +679,9 @@ int main()
 {
 	loadData();
 	loadDataTR();
+	date();
+	printf("\n\n\n");
+	printf("");
 	printf("\t\t||-----------ATM服务------------||\n");
 	printf("\t\t||	   业务办理>1		||\n");
 	printf("\t\t||	      退出>2		||\n");
